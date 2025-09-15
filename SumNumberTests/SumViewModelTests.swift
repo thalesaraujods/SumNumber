@@ -28,14 +28,14 @@ final class SumViewModelTests: XCTestCase {
     }
     
     // MARK: - Testes
-    func test_GivenTwoNumbers_WhenNumbersAreEmpty_ShouldReturnZero() throws {
-        
-        logger.debug(">>> test_GivenTwoNumbers_WhenNumbersAreEmpty_ShouldReturnZero chamado")
+    func test_GivenEmptyStrings_WhenSumming_ShouldReturnNil() throws {
+        logger.debug(">>> test_GivenEmptyStrings_WhenSumming_ShouldReturnNil chamado")
         
         // - ARRANGE: Preparar o ambiente e os dados para o teste.
         let number1 = ""
         let number2 = ""
         let expectedResult: Int? = nil
+        
         guard let viewModel = sumViewModel else {
             XCTFail("SumViewModel não foi instanciado corretamente.")
             return
@@ -46,14 +46,50 @@ final class SumViewModelTests: XCTestCase {
         
         // - ASSERT: Verificar o resultado da ação usando uma assertion.
         XCTAssertEqual(viewModel.resultado, expectedResult)
-        
     }
     
-    func test_GivenValidNumbers_WhenSumming_ShouldReturnCorrectResult() {
+    func test_GivenOneEmptyNumber_WhenSumming_ShouldReturnNil() {
+        logger.debug(">>> test_GivenOneEmptyNumber_WhenSumming_ShouldReturnNil chamado")
         
-        logger.debug(">>> test_GivenValidNumbers_WhenSumming_ShouldReturnCorrectResult chamado")
+        // - ARRANGE
+        let number1 = ""
+        let number2 = "5"
         
-        // - ARRANGE: Preparar o ambiente e os dados para o teste.
+        guard let viewModel = sumViewModel else {
+            XCTFail("SumViewModel não foi instanciado corretamente.")
+            return
+        }
+        
+        // - ACT
+        viewModel.sumNumbers(a: number1, b: number2)
+        
+        // - ASSERT
+        XCTAssertNil(viewModel.resultado)
+    }
+    
+    func test_GivenInvalidString_WhenSumming_ShouldReturnNil() {
+        logger.debug(">>> test_GivenInvalidString_WhenSumming_ShouldReturnNil chamado")
+        
+        // - ARRANGE
+        let number1 = "abc"
+        let number2 = "cde"
+        
+        guard let viewModel = sumViewModel else {
+            XCTFail("ViewModel não foi inicializado")
+            return
+        }
+        
+        // - ACT
+        viewModel.sumNumbers(a: number1, b: number2)
+        
+        // - ASSERT
+        XCTAssertTrue(viewModel.resultado == nil, "Resultado deve ser nulo para números inválidos!")
+    }
+    
+    func test_GivenPositiveNumbers_WhenSumming_ShouldReturnCorrectResult() {
+        logger.debug(">>> test_GivenPositiveNumbers_WhenSumming_ShouldReturnCorrectResult chamado")
+        
+        // - ARRANGE
         let number1 = "4"
         let number2 = "5"
         let expectedResult = 9
@@ -63,11 +99,31 @@ final class SumViewModelTests: XCTestCase {
             return
         }
         
-        // - ACT: Executar a ação ou a lógica que você quer testar.
+        // - ACT
         viewModel.sumNumbers(a: number1, b: number2)
         
-        // - ASSERT: Verificar o resultado da ação usando uma assertion.
+        // - ASSERT
         XCTAssertEqual(viewModel.resultado, expectedResult)
     }
     
+    func test_GivenNegativeNumbers_WhenSumming_ShouldReturnCorrectResult() {
+        logger.debug(">>> test_GivenNegativeNumbers_WhenSumming_ShouldReturnCorrectResult chamado")
+        
+        // - ARRANGE
+        let number1 = "-4"
+        let number2 = "-5"
+        let expectedResult = -9
+        
+        guard let viewModel = sumViewModel else {
+            XCTFail("ViewModel não foi inicializada")
+            return
+        }
+        
+        // - ACT
+        viewModel.sumNumbers(a: number1, b: number2)
+        
+        
+        // - ASSERT
+        XCTAssertEqual(viewModel.resultado, expectedResult)
+    }
 }
