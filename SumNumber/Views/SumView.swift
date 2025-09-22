@@ -15,21 +15,23 @@ struct SumView: View {
     
     var body: some View {
         VStack(spacing: 20){
-            
             Text("Calculadora básica")
                 .font(.largeTitle)
                 .fontWeight(.bold)
+                .accessibilityIdentifier("tituloCalculadoraText")
             
             TextField("Número 1:", text: $number1)
                 .padding()
                 .keyboardType(.numberPad)
                 .textFieldStyle(.roundedBorder)
+                .accessibilityIdentifier("numero1TextField")
             
             
             TextField("Número 2:", text: $number2)
                 .padding()
                 .keyboardType(.numberPad)
                 .textFieldStyle(.roundedBorder)
+                .accessibilityIdentifier("numero2TextField")
             
             
             Button("Somar", action: {
@@ -40,19 +42,21 @@ struct SumView: View {
             .background(Color.blue)
             .foregroundColor(.white)
             .cornerRadius(8)
+            .accessibilityIdentifier("somarButton")
             
-            if let resultado = vm.resultado {
-                Text("Resultado: \(resultado)")
-                    .font(.title2)
-                    .bold()
-            }
+            
+            
+            Text("Resultado: \(vm.resultado.map(String.init) ?? "Sem valor")")
+                .font(.title2)
+                .bold()
+                .accessibilityIdentifier("resultadoText")
             
             if let error = vm.error {
                 Text(error)
                     .foregroundColor(.red)
                     .multilineTextAlignment(.center)
+                    .accessibilityIdentifier("errorText")
             }
-            
         }
         .padding()
     }
@@ -61,3 +65,4 @@ struct SumView: View {
 #Preview {
     SumView()
 }
+
