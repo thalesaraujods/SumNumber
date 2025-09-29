@@ -12,43 +12,95 @@ import SwiftUI
 final class SumViewModelUITests: XCTestCase {
     
     private var app: XCUIApplication!
+    private let defaultTimeout: TimeInterval = 2.0
     
+    // MARK: - Lifecycle
     override func setUpWithError() throws {
         continueAfterFailure = false
-        
         app = XCUIApplication()
-        app.launch() // Launches the app
+        app.launch()
     }
     
     override func tearDownWithError() throws {
         app = nil
     }
     
-    func testSumButtonExist() throws {
-        let buttonSum = app.buttons["Somar"]
-        XCTAssertNotNil(buttonSum)
+    // MARK: - Tests
+    func test_GivenAppLaunched_WhenViewingInitialScreen_ThenSumButtonExists() throws {
+        // - Arrange
+        XCTContext.runActivity(named: "Given app is launched") {_ in
+            XCTAssertNotNil(app)
+        }
+        
+        // - Act
+        XCTContext.runActivity(named: "When no interaction happens") { _ in }
+        
+        // - Assert
+        XCTContext.runActivity(named: "Then 'Somar' button exists") { _ in
+            let sumButton = app.buttons["Somar"]
+            XCTAssertNotNil(sumButton)
+        }
     }
     
-    func testSumResultIsNilInitially() throws {
-        let resultadoText = app.staticTexts["Resultado: Sem valor"]
-        XCTAssertTrue(resultadoText.exists)
+    func test_GivenAppLaunched_WhenViewingInitialScreen_ThenResultsIsNil() throws {
+        // - Arrange
+        XCTContext.runActivity(named: "Given app is launched") {_ in
+            XCTAssertNotNil(app)
+        }
+        
+        // - Act
+        XCTContext.runActivity(named: "When no interaction happens") { _ in }
+        
+        // - Assert
+        XCTContext.runActivity(named: "Then 'Somar' button exists") { _ in
+            let textResult = app.staticTexts["resultadoText"]
+            XCTAssertTrue(textResult.exists)
+            XCTAssertEqual(textResult.label, "Resultado: Sem valor")
+        }
     }
     
-    func testSumAfterTap() throws {
-        // Pega o campo de texto, o botão e o elemento de resultado
-        let campoNumero1 = app.textFields["numero1TextField"]
-        let campoNumero2 = app.textFields["numero2TextField"]
-        let botaoSomar = app.buttons["Somar"]
-
-        // Simula a entrada de dados e o toque no botão
-        campoNumero1.tap()
-        campoNumero1.typeText("10")
-        campoNumero2.tap()
-        campoNumero2.typeText("20")
-        botaoSomar.tap()
-
-        // Verifica se o resultado correto é exibido
-        let resultadoFinal = app.staticTexts["Resultado: 30"]
-        XCTAssertTrue(resultadoFinal.exists)
+    func test_GivenTwoNumbers_WhenTapSum_ThenShowCorrectsResult() throws {
+        // - Arrange
+        let number1 = app.textFields["numero1TextField"]
+        let number2 = app.textFields["numero2TextField"]
+        let sumButton = app.buttons["Somar"]
+        let textResult = app.staticTexts["resultadoText"]
+        
+        XCTContext.runActivity(named: "Given two numbers") { _ in
+            XCTAssertNotNil(number1)
+            XCTAssertNotNil(number2)
+            XCTAssertNotNil(sumButton)
+            XCTAssertNotNil(textResult)
+        }
+        
+        // - Act
+        number1.tap()
+        number1.typeText("10")
+        
+        number2.tap()
+        number2.typeText("20")
+        
+        sumButton.tap()
+        
+        // - Assert
+        XCTAssertEqual(textResult.label, "Resultado: 30")
+    }
+    
+    func test_GivenTwoNumbers_WhenTapSumWithInvalidNumber_ThenShowError() throws {
+        // - Arrange
+        let number1 = app.textFields["numero1TextField"]
+        let number2 = app.textFields["numero2TextField"]
+        let sumButton = app.buttons["Somar"]
+        let erroResult = app.staticTexts["errorText"]
+        
+        // - Act
+        number1.tap()
+        number1.typeText("10")
+        number2.tap()
+        number2.typeText("20t")
+        sumButton.tap()
+        
+        // - Assert
+        XCTAssertNotNil(erroResult)
     }
 }
