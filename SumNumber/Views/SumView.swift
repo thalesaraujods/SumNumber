@@ -12,6 +12,7 @@ struct SumView: View {
     @StateObject var vm: SumViewModel = SumViewModel()
     @State var number1: String = ""
     @State var number2: String = ""
+    static let tag = "SumView"
     
     var body: some View {
         VStack(spacing: 20){

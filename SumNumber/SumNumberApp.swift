@@ -11,7 +11,7 @@ import SwiftUI
 struct SumNumberApp: App {
     var body: some Scene {
         WindowGroup {
-            SumView()
+            HomeView()
         }
     }
 }

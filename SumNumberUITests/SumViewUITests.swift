@@ -9,7 +9,7 @@ import XCTest
 import SwiftUI
 @testable import SumNumber
 
-final class SumViewModelUITests: XCTestCase {
+final class SumViewUITests: XCTestCase {
     
     private var app: XCUIApplication!
     private let defaultTimeout: TimeInterval = 2.0
@@ -102,5 +102,9 @@ final class SumViewModelUITests: XCTestCase {
         
         // - Assert
         XCTAssertNotNil(erroResult)
+    }
+    
+    func test() throws {
+        let button = app.textFields[""]
     }
 }

@@ -8,8 +8,22 @@
 import SwiftUI
 
 struct HomeView: View {
+    
+    @State var path: NavigationPath = .init()
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack (path: $path) {
+            VStack {
+                Button("Calcular", action: {
+                    path.append(SumView.tag)
+                })
+                .buttonStyle(.borderedProminent)
+            }
+            .navigationDestination(for: String.self, destination: {_ in
+                SumView()
+            })
+        }
+        
     }
 }
 
