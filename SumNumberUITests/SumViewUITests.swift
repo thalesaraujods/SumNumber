@@ -25,28 +25,20 @@ final class SumViewUITests: XCTestCase {
         app = nil
     }
     
-    // MARK: - Tests
-    func test_GivenAppLaunched_WhenViewingInitialScreen_ThenSumButtonExists() throws {
-        // - Arrange
-        XCTContext.runActivity(named: "Given app is launched") {_ in
-            XCTAssertNotNil(app)
-        }
+    // MARK: - Helpers
+    private func navigateToSumView(file: StaticString = #filePath, line: UInt = #line) {
+        let calcularButton = app.buttons["Calcular"]
+        XCTAssertTrue(calcularButton.waitForExistence(timeout: defaultTimeout), "Botão 'Calcular' não encontrado na HomeView", file: file, line: line)
+        calcularButton.tap()
         
-        // - Act
-        XCTContext.runActivity(named: "When no interaction happens") { _ in }
-        
-        // - Assert
-        XCTContext.runActivity(named: "Then 'Somar' button exists") { _ in
-            let sumButton = app.buttons["Somar"]
-            XCTAssertNotNil(sumButton)
-        }
+        let sumTitle = app.staticTexts["tituloCalculadoraText"]
+        XCTAssertTrue(sumTitle.waitForExistence(timeout: defaultTimeout), "SumView não apareceu após tocar em 'Calcular'", file: file, line: line)
     }
     
-    func test_GivenAppLaunched_WhenViewingInitialScreen_ThenResultsIsNil() throws {
+    // MARK: - Tests (SumView)
+    func test_GivenSum_WhenViewingInitialScreen_ThenResultsIsNil() throws {
         // - Arrange
-        XCTContext.runActivity(named: "Given app is launched") {_ in
-            XCTAssertNotNil(app)
-        }
+        navigateToSumView()
         
         // - Act
         XCTContext.runActivity(named: "When no interaction happens") { _ in }
@@ -61,6 +53,8 @@ final class SumViewUITests: XCTestCase {
     
     func test_GivenTwoNumbers_WhenTapSum_ThenShowCorrectsResult() throws {
         // - Arrange
+        navigateToSumView()
+        
         let number1 = app.textFields["numero1TextField"]
         let number2 = app.textFields["numero2TextField"]
         let sumButton = app.buttons["Somar"]
@@ -88,6 +82,8 @@ final class SumViewUITests: XCTestCase {
     
     func test_GivenTwoNumbers_WhenTapSumWithInvalidNumber_ThenShowError() throws {
         // - Arrange
+        navigateToSumView()
+        
         let number1 = app.textFields["numero1TextField"]
         let number2 = app.textFields["numero2TextField"]
         let sumButton = app.buttons["Somar"]
@@ -102,9 +98,5 @@ final class SumViewUITests: XCTestCase {
         
         // - Assert
         XCTAssertNotNil(erroResult)
-    }
-    
-    func test() throws {
-        let button = app.textFields[""]
     }
 }
