@@ -18,6 +18,7 @@ struct HomeView: View {
                     path.append(SumView.tag)
                 })
                 .buttonStyle(.borderedProminent)
+                .accessibilityIdentifier("tituloHome")
             }
             .navigationDestination(for: String.self, destination: {_ in
                 SumView()
